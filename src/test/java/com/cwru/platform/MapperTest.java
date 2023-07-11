@@ -1,8 +1,10 @@
 package com.cwru.platform;
 
 import com.cwru.platform.dao.DiscussPostMapper;
+import com.cwru.platform.dao.LoginTicketMapper;
 import com.cwru.platform.dao.UserMapper;
 import com.cwru.platform.entity.DiscussPost;
+import com.cwru.platform.entity.LoginTicket;
 import com.cwru.platform.entity.User;
 
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,9 @@ public class MapperTest {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Test
     public void testSelectUser() {
@@ -71,10 +76,30 @@ public class MapperTest {
             System.out.println(post);
         }
 
-        int rows = discussPostMapper.selectDiscussPostRows(149);
-        System.out.println(rows);
+//        int rows = discussPostMapper.selectDiscussPostRows(149);
+//        System.out.println(rows);
     }
 
 
+    @Test
+    public void testInsertLoginTicket() {
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(101);
+        loginTicket.setTicket("abc");
+        loginTicket.setStatus(0);
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
+
+        loginTicketMapper.insertLoginTicket(loginTicket);
+    }
+
+    @Test
+    public void testSelectLoginTicket() {
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
+
+        loginTicketMapper.updateStatus("abc", 1);
+        loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
+    }
 
 }

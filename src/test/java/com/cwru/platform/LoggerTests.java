@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class LoggerTests {
 
     private static Logger logger = LoggerFactory.getLogger(LoggerTests.class);
-    //1
+    //2
     @Test
     public void testLogger(){
         System.out.println(logger.getName());
