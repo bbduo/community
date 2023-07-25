@@ -1,7 +1,9 @@
 package com.cwru.platform.controller;
 
+import com.cwru.platform.entity.Event;
 import com.cwru.platform.entity.Page;
 import com.cwru.platform.entity.User;
+import com.cwru.platform.event.EventProducer;
 import com.cwru.platform.service.FollowService;
 import com.cwru.platform.service.UserService;
 import com.cwru.platform.util.HostHolder;
@@ -30,12 +32,24 @@ public class FollowerController implements PlatformConstant {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType, entityId);
+
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
 
         return PlatformUtil.getJSONString(0, "已关注!");
     }

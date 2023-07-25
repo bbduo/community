@@ -4,6 +4,7 @@ import com.cwru.platform.annotation.LoginRequired;
 import com.cwru.platform.controller.interceptor.AlphaInterceptor;
 import com.cwru.platform.controller.interceptor.LoginRequiredInterceptor;
 import com.cwru.platform.controller.interceptor.LoginTicketInterceptor;
+import com.cwru.platform.controller.interceptor.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -22,6 +23,9 @@ public class WebMcvConfig implements WebMvcConfigurer {
     @Autowired
     private LoginRequiredInterceptor loginRequiredInterceptor;
 
+    @Autowired
+    private MessageInterceptor messageInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(alphaInterceptor)
@@ -33,6 +37,10 @@ public class WebMcvConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(loginRequiredInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
+
+        registry.addInterceptor(messageInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
+
     }
 
 }

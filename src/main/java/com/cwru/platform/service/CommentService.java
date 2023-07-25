@@ -53,4 +53,8 @@ public class CommentService implements PlatformConstant {
         return rows;
     }
 
+    public Comment findCommentById(int id) {
+        return commentMapper.selectCommentById(id);
+    }
+
 }
